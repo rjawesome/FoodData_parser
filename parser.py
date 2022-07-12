@@ -37,9 +37,9 @@ def load_data(data_folder: str):
       if 'min' in n:
         doc['relation']['nutrientMinAmount'] = n['min']
       if 'max' in n:
-        doc['relation']['nutrientMinAmount'] = n['max']
+        doc['relation']['nutrientMaxAmount'] = n['max']
       if 'median' in n:
-        doc['relation']['nutrientMinAmount'] = n['median']
+        doc['relation']['nutrientMedianAmount'] = n['median']
       
       doc['_id'] = f"{doc['subject']['fdcId']}-{doc['object']['nutrientId']}"
       yield doc
