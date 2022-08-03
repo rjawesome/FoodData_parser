@@ -177,7 +177,7 @@ chebi_mappings = {
   'Citric acid': 'CHEBI:30769',
   'Malic acid': 'CHEBI:6650',
   'Zeaxanthin': 'CHEBI:27547',
-  'Beta-sitosterol': '',
+  'Beta-sitosterol': 'CHEBI:27693',
   'Campesterol': 'CHEBI:28623',
   'Delta-5-avenasterol': '',
   'Beta-sitostanol': '',
