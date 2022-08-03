@@ -1,4 +1,5 @@
 import ujson
+import csv
 import os
 
 # maps nutrient names to CHEBI IDs
@@ -239,15 +240,47 @@ def get_chebi_id(nutrient_name: str):
   except KeyError:
     return None
 
+#convert csv into a list of dicts
+def read_csv(file: str, delim: str):
+  info = []
+  with open(file) as csv_file:
+    reader = csv.reader(csv_file, delimiter=delim)
+    categories: list[str]
+    i = 0
+    for row in reader:
+      if len(row) == 0:
+        continue
+      if i == 0:
+        categories = row
+      else:
+        info.append({})
+        for j in range(len(row)):
+          info[i-1][categories[j]] = row[j]
+      i += 1
+  
+  return info
+
+def get_foodon_ids(data_folder: str) -> dict[str, str]:
+  attribute_data = read_csv(os.path.join(data_folder, 'food_attribute.csv'), ',')
+  foodon_ids = {}
+  for food_attr in attribute_data:
+    if food_attr['name'] == 'FoodOn Ontology ID for FDC item':
+      foodon_ids[food_attr['fdc_id']] = food_attr['value'][food_attr['value'].find('FOODON'):]
+  return foodon_ids  
+
 def load_data(data_folder: str):
+  foodon_ids = get_foodon_ids(data_folder)
   with open(os.path.join(data_folder, 'FoodData_Central_foundation_food_json_2022-04-28.json')) as f:
     data = ujson.load(f)['FoundationFoods']
   for food in data:
+    if not str(food['fdcId']) in foodon_ids:
+      continue
     base = {
       'subject': {
         'description': food['description'],
         'ndbNumber': food['ndbNumber'],
         'fdcId': food['fdcId'],
+        'foodOnId': foodon_ids[str(food['fdcId'])],
         'foodCategory': food['foodCategory']['description']
       }
     }
