@@ -266,13 +266,11 @@ def read_csv(file: str, delim: str):
 
 
 def get_foodon_ids(data_folder: str) -> Dict[str, str]:
-    attribute_data = read_csv(os.path.join(
-        data_folder, 'food_attribute.csv'), ',')
+    attribute_data = read_csv(os.path.join(data_folder, 'FoodData_Central_foundation_food_csv_2022-04-28', 'food_attribute.csv'), ',')
     foodon_ids = {}
     for food_attr in attribute_data:
         if food_attr['name'] == 'FoodOn Ontology ID for FDC item':
-            foodon_ids[food_attr['fdc_id']
-                       ] = food_attr['value'][food_attr['value'].find('FOODON'):]
+            foodon_ids[food_attr['fdc_id']] = food_attr['value'][food_attr['value'].find('FOODON'):]
     return foodon_ids
 
 
