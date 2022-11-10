@@ -1,4 +1,4 @@
-import ujson
+import orjson
 import csv
 import os
 from typing import Dict
@@ -277,7 +277,7 @@ def get_foodon_ids(data_folder: str) -> Dict[str, str]:
 def load_data(data_folder: str):
     foodon_ids = get_foodon_ids(data_folder)
     with open(os.path.join(data_folder, 'FoodData_Central_foundation_food_json_2022-04-28.json')) as f:
-        data = ujson.load(f)['FoundationFoods']
+        data = orjson.loads(f.read())['FoundationFoods']
     for food in data:
         if not str(food['fdcId']) in foodon_ids:
             continue
